@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../../doc/drakeURDF.xsd" name="Inertial">
+
+
+  <parameter name="l1" value="1.0" lb="0.5" ub="2.0"/>
+  <parameter name="l2" value="1.0" lb="0.5" ub="4.0" />
+<parameter name="l3" value="1.0" lb="0.5" ub="2.0"/>
+  <parameter name="l4" value="1.0" lb="0.5" ub="4.0" />
+<parameter name="l5" value="1.0" lb="0.5" ub="2.0"/>
+  <parameter name="l6" value="1.0" lb="0.5" ub="4.0" />
+<parameter name="l7" value="1.0" lb="0.5" ub="2.0"/>
+  <parameter name="l8" value="1.0" lb="0.5" ub="4.0" />
+
+  <parameter name="m1" value="1.0" lb="0.1" ub="2.0" />
+  <parameter name="m2" value="1.0" lb="0.1" ub="2.0"/>
+<parameter name="m3" value="1.0" lb="0.1" ub="2.0" />
+  <parameter name="m4" value="1.0" lb="0.1" ub="2.0"/>
+<parameter name="m5" value="1.0" lb="0.1" ub="2.0" />
+  <parameter name="m6" value="1.0" lb="0.1" ub="2.0"/>
+<parameter name="m7" value="1.0" lb="0.1" ub="2.0" />
+  <parameter name="m8" value="1.0" lb="0.1" ub="2.0"/>
+
+
+
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+         <box size=".2 .2 .2" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="link0">
+    <inertial>
+      <origin xyz="0 0 -$l1 / 2" rpy="0 0 0" />
+      <mass value="$m1" />
+      <inertia ixx="$m1 * $l1 * $l1 / 12" ixy="0" ixz="0" iyy="$m1 * $l1 * $l1 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l1 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l1" radius="0.1 * $m1" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="link1">
+    <inertial>
+      <origin xyz="0 0 -$l2 / 2" rpy="0 0 0" />
+      <mass value="$m2" />
+      <inertia ixx="$m2 * $l2 * $l2 /12 " ixy="0" ixz="0" iyy="$m2 * $l2 * $l2 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l2 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l2" radius="0.1 * $m2" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+<link name="link2">
+    <inertial>
+      <origin xyz="0 0 -$l3 / 2" rpy="0 0 0" />
+      <mass value="$m3" />
+      <inertia ixx="$m3 * $l3 * $l3 /12 " ixy="0" ixz="0" iyy="$m3 * $l3 * $l3 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l3 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l3" radius="0.1 * $m3" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+<link name="link3">
+    <inertial>
+      <origin xyz="0 0 -$l4 / 2" rpy="0 0 0" />
+      <mass value="$m4" />
+      <inertia ixx="$m4 * $l4 * $l4 /12 " ixy="0" ixz="0" iyy="$m4 * $l4 * $l4 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l4 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l4" radius="0.1 * $m4" />
+      </geometry>
+      <material name="blue">
+	<color rgba="1 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+<!--
+<link name="link4">
+    <inertial>
+      <origin xyz="0 0 -$l5 / 2" rpy="0 0 0" />
+      <mass value="$m5" />
+      <inertia ixx="$m5 * $l5 * $l5 /12 " ixy="0" ixz="0" iyy="$m5 * $l5 * $l5 / 12" iyz="0" izz="0" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 -$l5 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l5" radius="0.1 * $m5" />
+      </geometry>
+      <material name="blue">
+	<color rgba="1 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+
+<link name="link5">
+    <inertial>
+      <origin xyz="0 0 -$l6 / 2" rpy="0 0 0" />
+      <mass value="$m6" />
+      <inertia ixx="$m6 * $l6 * $l6 /12 " ixy="0" ixz="0" iyy="$m6 * $l6 * $l6 / 12" iyz="0" izz="0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l6 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l6" radius="0.1 * $m6" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 1 1 1" />
+      </material>
+    </visual>
+  </link>
+
+
+<link name="link6">
+    <inertial>
+      <origin xyz="0 0 -$l7 / 2" rpy="0 0 0" />
+      <mass value="$m7" />
+      <inertia ixx="$m7 * $l7 * $l7 /12 " ixy="0" ixz="0" iyy="$m7 * $l7 * $l7 / 12" iyz="0" izz="0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l7 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l7" radius="0.1 * $m7" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+<link name="link7">
+    <inertial>
+      <origin xyz="0 0 -$l8 / 2" rpy="0 0 0" />
+      <mass value="$m8" />
+      <inertia ixx="$m8 * $l8 * $l8 /12 " ixy="0" ixz="0" iyy="$m8 * $l8 * $l8 / 12" iyz="0" izz="0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l8 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l8" radius="0.1 * $m8" />
+      </geometry>
+      <material name="blue">
+	<color rgba="1 1 1 1" />
+      </material>
+    </visual>
+  </link>
+
+-->
+  
+  <joint name="joint0" type="continuous">
+    <parent link="base_link" />
+    <child link="link0" />
+    <origin xyz="0 .15 0" />
+    <axis xyz="0 1 0" />
+    <!--<dynamics damping="$b1" />-->
+    <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint0_trans">
+    <actuator name="joint0_torque" />
+    <joint name="joint0" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+
+  <joint name="joint1" type="continuous">
+    <parent link="link0" />
+    <child link="link1" />
+    <origin xyz="0 .1 -$l1" />
+    <axis xyz="0 1 0" />
+    <!--<dynamics damping="$b2" />-->
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint1_trans">
+    <actuator name="joint1_torque" />
+    <joint name="joint1" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <joint name="joint2" type="continuous">
+    <parent link="link1" />
+    <child link="link2" />
+    <origin xyz="0 .1 -$l2" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint2_trans">
+    <actuator name="joint2_torque" />
+    <joint name="joint2" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <joint name="joint3" type="continuous">
+    <parent link="link2" />
+    <child link="link3" />
+    <origin xyz="0 .1 -$l3" />
+    <axis xyz="0 1 0" />
+    <!--<dynamics damping="$b2" />-->
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint3_trans">
+    <actuator name="joint3_torque" />
+    <joint name="joint3" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+<!--
+  <joint name="joint4" type="continuous">
+    <parent link="link3" />
+    <child link="link4" />
+    <origin xyz="0 .1 -$l4" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint4_trans">
+    <actuator name="joint4_torque" />
+    <joint name="joint4" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+
+  <joint name="joint5" type="continuous">
+    <parent link="link4" />
+    <child link="link5" />
+    <origin xyz="0 .1 -$l5" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+
+  <transmission type="SimpleTransmission" name="joint5_trans">
+    <actuator name="joint5_torque" />
+    <joint name="joint5" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+
+
+  <joint name="joint6" type="continuous">
+    <parent link="link5" />
+    <child link="link6" />
+    <origin xyz="0 .1 -$l6" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint6_trans">
+    <actuator name="joint6_torque" />
+    <joint name="joint6" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <joint name="joint7" type="continuous">
+    <parent link="link6" />
+    <child link="link7" />
+    <origin xyz="0 .1 -$l7" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint7_trans">
+    <actuator name="joint7_torque" />
+    <joint name="joint7" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+-->
+
+
+
+<!--<frame name="hand" link="link7" xyz="0 0 -$l8" rpy="0 0 0" />-->
+</robot>

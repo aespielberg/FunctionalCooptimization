@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+<robot name="Biped" xmlns="http://drake.mit.edu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://drake.mit.edu ../../doc/drakeURDF.xsd">
+	
+	<parameter lb="0.5" name="LOWERLEGLENGTH" ub="1.0" value="1.0"/>
+	<parameter lb="0.5" name="UPPERLEGLENGTH" ub="2.0" value="1.0"/>
+	
+	<parameter lb="0.1" name="LOWERLEGWIDTHX" ub="1.2" value="0.3"/>
+	<parameter lb="0.1" name="UPPERLEGWIDTHX" ub="1.2" value="0.3"/>
+	
+	<parameter lb="0.1" name="LOWERLEGWIDTHZ" ub="2.0" value="0.3"/>
+	<parameter lb="0.1" name="UPPERLEGWIDTHZ" ub="2.0" value="0.3"/>
+	
+	
+	<parameter lb="0.5" name="BASEEXTENTSX" ub="4.0" value="1.0"/>
+	<parameter lb="0.5" name="BASEEXTENTSY" ub="4.0" value="1.0"/>
+	<parameter lb="0.5" name="BASEEXTENTSZ" ub="4.0" value="1.0"/>
+	
+	<parameter lb="0.5" name="BASEMASS" ub="5.0" value="1.0"/>
+	<parameter lb="0.5" name="UPPERLEGMASS" ub="5.0" value="1.0"/>
+	<parameter lb="0.5" name="LOWERLEGMASS" ub="5.0" value="1.0"/>
+	
+	
+	
+	
+	
+	
+	<link name="base_link">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<mass value="$BASEMASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<geometry>
+				<box size="$BASEEXTENTSX $BASEEXTENTSY $BASEEXTENTSZ"/>
+			</geometry>
+			<material name="green">
+				<color rgba="0 1 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="leg_link0">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 -1.0"/>
+			<mass value="$UPPERLEGMASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 -$UPPERLEGLENGTH/2.0"/>
+			<geometry>
+				<box size="$UPPERLEGWIDTHX $UPPERLEGWIDTHY $UPPERLEGLENGTH"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="leg_joint0" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link0"/>
+		<origin xyz="-$BASEEXTENTSX/2.0 - $UPPERLEGWIDTHX/2.0 0.0 0.0"/>
+		<axis xyz="1 0 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint0_trans" type="SimpleTransmission">
+		<actuator name="leg_joint0_torque"/>
+		<joint name="leg_joint0"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+<link name="leg_link1">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 -1.0"/>
+			<mass value="$UPPERLEGMASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 -$UPPERLEGLENGTH/2.0"/>
+			<geometry>
+				<box size="$UPPERLEGWIDTHX $UPPERLEGWIDTHY $UPPERLEGLENGTH"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="leg_joint1" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link1"/>
+		<origin xyz="0.65 0.0 0.0"/>
+		<axis xyz="1 0 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint1_trans" type="SimpleTransmission">
+		<actuator name="leg_joint1_torque"/>
+		<joint name="leg_joint1"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+
+<link name="leg_link2">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 -$LOWERLEGLENGTH/2"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 -$LOWERLEGLENGTH/2"/>
+			<geometry>
+				<box size="0.3 0.3 $LOWERLEGLENGTH"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 -$LOWERLEGLENGTH"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint2" type="continuous">
+		<parent link="leg_link0"/>
+		<child link="leg_link2"/>
+		<origin xyz="0.0 0.0 -2.0"/>
+		<axis xyz="1 0 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint2_trans" type="SimpleTransmission">
+		<actuator name="leg_joint2_torque"/>
+		<joint name="leg_joint2"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+
+
+
+<link name="leg_link3">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 -$LOWERLEGLENGTH/2"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 -$LOWERLEGLENGTH/2"/>
+			<geometry>
+				<box size="0.3 0.3 $LOWERLEGLENGTH"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+        <collision>
+			<origin xyz="0 0 -$LOWERLEGLENGTH"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint3" type="continuous">
+		<parent link="leg_link1"/>
+		<child link="leg_link3"/>
+		<origin xyz="0.0 0.0 -2.0"/>
+		<axis xyz="1 0 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint3_trans" type="SimpleTransmission">
+		<actuator name="leg_joint3_torque"/>
+		<joint name="leg_joint3"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	
+</robot>
+

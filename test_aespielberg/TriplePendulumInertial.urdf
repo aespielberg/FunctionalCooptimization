@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../../doc/drakeURDF.xsd" name="TriplePendulumInertial">
+
+
+  <parameter name="l1" value="1.0" lb="0.5" />
+  <parameter name="l2" value="2.0" lb="0.5" />
+  <parameter name="l3" value="2.0" lb="0.5" />
+
+
+  <parameter name="m1" value="1.0" lb="0.1" />
+  <parameter name="m2" value="1.0" lb="0.1" />
+  <parameter name="m3" value="1.0" lb="0.1" />
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+         <box size=".2 .2 .2" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="upper_link">
+    <inertial>
+      <origin xyz="0 0 -$l1 / 2" rpy="0 0 0" />
+      <mass value="$m1" />
+      <inertia ixx="$m1 * $l1 * $l1 / 12" ixy="0" ixz="0" iyy="$m1 * $l1 * $l1 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l1 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l1" radius="0.1 * $m1" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="lower_link">
+    <inertial>
+      <origin xyz="0 0 -$l2 / 2" rpy="0 0 0" />
+      <mass value="$m2" />
+      <inertia ixx="$m2 * $l2 * $l2 /12 " ixy="0" ixz="0" iyy="$m2 * $l2 * $l2 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l2 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l2" radius="0.1 * $m2" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+<link name="bottom_link">
+    <inertial>
+      <origin xyz="0 0 -$l3 / 2" rpy="0 0 0" />
+      <mass value="$m3" />
+      <inertia ixx="$m3 * $l3 * $l3 /13 " ixy="0" ixz="0" iyy="$m3 * $l3 * $l3 / 12" iyz="0" izz="0" />
+      <!--<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />-->
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l3 / 2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l3" radius="0.1 * $m3" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="shoulder" type="continuous">
+    <parent link="base_link" />
+    <child link="upper_link" />
+    <origin xyz="0 .15 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping=".1" />
+  </joint>
+
+  <joint name="elbow" type="continuous">
+    <parent link="upper_link" />
+    <child link="lower_link" />
+    <origin xyz="0 .1 -$l1" />
+    <axis xyz="0 1 0" />
+    <!--<dynamics damping="$b2" />-->
+     <dynamics damping=".1" />
+  </joint>
+
+<joint name="wrist" type="continuous">
+    <parent link="lower_link" />
+    <child link="bottom_link" />
+    <origin xyz="0 .1 -$l2" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+
+
+  <transmission type="SimpleTransmission" name="shoulder_trans">
+    <actuator name="shoulder_torque" />
+    <joint name="shoulder" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+</robot>

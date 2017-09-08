@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../../doc/drakeURDF.xsd" name="Inertial">
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+         <box size=".05 .05 .05" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="upper_link">
+    <inertial>
+      <origin xyz="0 -0.14669709 0" rpy="1.570796 0 0" />
+      <mass value="0.33876434" />
+      <inertia ixx="0.00087940" ixy="-0.00000106" ixz="-0.00000038" iyy="0.00008585" iyz="0.00007459" izz="0.00080870" />
+    </inertial>
+    <visual>
+      <origin xyz="0 -0.08811 0 " rpy="1.570796 0 0" />
+      <geometry>
+         <cylinder length="0.17622" radius="0.01" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="lower_link">
+    <inertial>
+      <origin xyz="0 -0.08718142 0 " rpy="1.570796 0 0" />
+      <mass value="0.0943" />
+      <inertia ixx="0.00087728" ixy="0.00000096" ixz="-0.00000004" iyy="0.00002499" iyz="0.00005747" izz="0.00085546" />
+    </inertial>
+    <visual>
+      <origin xyz="0 -0.16682 0 " rpy="1.570796 0 0" />
+      <geometry>
+         <cylinder length="0.33364" radius="0.01" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="shoulder" type="continuous">
+    <parent link="base_link" />
+    <child link="upper_link" />
+    <origin xyz="0 0 0 " />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.029" />
+  </joint>
+
+  <joint name="elbow" type="continuous">
+    <parent link="upper_link" />
+    <child link="lower_link" />
+    <origin xyz="0 -0.17622 0" />
+    <axis xyz="0 0 1" />
+     <dynamics damping="0.0319" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="shoulder_trans">
+    <actuator name="shoulder_torque" />
+    <joint name="shoulder" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+<transmission type="SimpleTransmission" name="elbow_trans">
+    <actuator name="elbow_torque" />
+    <joint name="elbow" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+</robot>

@@ -1,0 +1,350 @@
+#!/usr/bin/env python
+import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
+import numpy as np
+from sympy import symbols
+import IPython
+
+NUM_LEGS = 2
+LEG_DEPTH = 2
+BODY_MASS_VAL = 1.0
+LEG_MASS_VAL = []
+BASE_LINK_NAME = "base_link"
+BASE_LINK_EXTENTS_VAL = np.array([1.0, 1.0, 1.0])
+#LEG_LINK_EXTENTS = np.array([0.1, 0.1, 0.3])
+
+BASE_ORIGIN_VAL = [0.0, 0.0, 0.0]
+
+BODY_MASS = "$BODY_MASS"
+LEG_MASS = []
+for i in range(NUM_LEGS):
+    LEG_MASS.append("$LEG_MASS" + str(i))
+    LEG_MASS_VAL.append(1.0)
+BASE_LINK_EXTENTS = ["$BASE_LINK_EXTENTS_X", "$BASE_LINK_EXTENTS_Y", "$BASE_LINK_EXTENTS_Z"]
+
+LEG_LINK_EXTENTS = []
+for i in range(NUM_LEGS):
+    LEG_LINK_EXTENTS.append(["$LEG_LINK_EXTENTS_X" + str(i), "$LEG_LINK_EXTENTS_Y" + str(i), "$LEG_LINK_EXTENTS_Z" + str(i)])
+LEG_LINK_EXTENTS_VAL = np.array([[0.3, 0.3, 2.0], [0.3, 0.3, 1.0]])
+
+
+body_mass_param = [BODY_MASS, BODY_MASS_VAL]
+
+leg_mass_param = []
+for i in NUM_LEGS:
+    leg_mass_param.append([LEG_MASS[i], LEG_MASS_VAL[i]])
+base_link_extents_param_x = [BASE_LINK_EXTENTS[0], BASE_LINK_EXTENTS_VAL[0]]
+base_link_extents_param_y = [BASE_LINK_EXTENTS[1], BASE_LINK_EXTENTS_VAL[1]]
+base_link_extents_param_z = [BASE_LINK_EXTENTS[2], BASE_LINK_EXTENTS_VAL[2]]
+
+leg_link_extents_param_x = []
+leg_link_extents_param_y = []
+leg_link_extents_param_z = []
+
+for i in range(NUM_LEGS):
+    leg_link_extents_param_x.append([LEG_LINK_EXTENTS[i][0], LEG_LINK_EXTENTS_VAL[i][0]])
+    leg_link_extents_param_y.append([LEG_LINK_EXTENTS[i][1], LEG_LINK_EXTENTS_VAL[i][1]])
+    leg_link_extents_param_z.append([LEG_LINK_EXTENTS[i][2], LEG_LINK_EXTENTS_VAL[i][2]])
+
+
+"""
+#body_mass_param = [BODY_MASS_VAL, BODY_MASS_VAL]
+body_mass_param = [BODY_MASS, BODY_MASS_VAL]
+leg_mass_param = [LEG_MASS_VAL, LEG_MASS_VAL]
+#base_link_extents_param_x = [BASE_LINK_EXTENTS_VAL[0], BASE_LINK_EXTENTS_VAL[0]]
+base_link_extents_param_x = [BASE_LINK_EXTENTS[0], BASE_LINK_EXTENTS_VAL[0]]
+base_link_extents_param_y = [BASE_LINK_EXTENTS_VAL[1], BASE_LINK_EXTENTS_VAL[1]]
+base_link_extents_param_z = [BASE_LINK_EXTENTS_VAL[2], BASE_LINK_EXTENTS_VAL[2]]
+
+leg_link_extents_param_x = [LEG_LINK_EXTENTS_VAL[0], LEG_LINK_EXTENTS_VAL[0]]
+leg_link_extents_param_y = [LEG_LINK_EXTENTS_VAL[1], LEG_LINK_EXTENTS_VAL[1]]
+leg_link_extents_param_z = [LEG_LINK_EXTENTS_VAL[2], LEG_LINK_EXTENTS_VAL[2]]
+#leg_link_extents_param_z = [LEG_LINK_EXTENTS[2], LEG_LINK_EXTENTS_VAL[2]]
+"""
+
+base_origin_val_x = [BASE_ORIGIN_VAL[0], BASE_ORIGIN_VAL[0]]
+base_origin_val_y = [BASE_ORIGIN_VAL[1], BASE_ORIGIN_VAL[1]]
+base_origin_val_z = [BASE_ORIGIN_VAL[2], BASE_ORIGIN_VAL[2]]
+
+
+
+
+
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = ET.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="\t")
+
+def add_link(robot, origin_val, name, extents, mass_val, material_val="green", color_val = [0, 1, 0, 1], all_contacts=-1):
+    link = ET.SubElement(robot, "link")
+    link.attrib["name"] = name
+
+    inertial = ET.SubElement(link, "inertial")
+
+    origin = ET.SubElement(inertial, "origin")
+    origin.attrib['xyz'] = str(origin_val[0]) + " " + str(origin_val[1]) + " " + str(origin_val[2])
+    origin.attrib['rpy'] = "0 0 0"
+    
+    mass = ET.SubElement(inertial, "mass")
+
+    mass.attrib['value'] = str(mass_val)
+    
+
+    inertia = ET.SubElement(inertial, "inertia")
+
+    #TODO: clean these up:
+    inertia.attrib['ixx'] = "1"
+    inertia.attrib['ixy'] = "0"
+    inertia.attrib['ixz'] = "0"
+    inertia.attrib['iyy'] = "1"
+    inertia.attrib['iyz'] = "0"
+    inertia.attrib['izz'] = "1"
+
+
+    #############VISUAL SECTION################
+    visual = ET.SubElement(link, "visual")
+
+    origin = ET.SubElement(visual, "origin")
+    origin.attrib['xyz'] = str(origin_val[0]) + " " + str(origin_val[1]) + " " + str(origin_val[2])
+    origin.attrib['rpy'] = "0 0 0"
+
+    geometry = ET.SubElement(visual, "geometry")
+
+    box = ET.SubElement(geometry, "box")
+    box.attrib['size'] = str(extents[0]) + " " + str(extents[1]) + " " + str(extents[2])
+
+    material = ET.SubElement(visual, "material")
+    material.attrib['name'] = material_val
+
+    color = ET.SubElement(material, "color")
+    color.attrib['rgba'] = str(color_val[0]) + " " + str(color_val[1]) + " " + str(color_val[2]) + " " + str(color_val[3])
+
+
+    #################COLLISION SECTION###########
+    if all_contacts == 1:
+        collision = ET.SubElement(link, "collision")
+        origin = ET.SubElement(collision, "origin")
+        origin.attrib['xyz'] = str(origin_val[0]) + " " + str(origin_val[1]) + " " + str(origin_val[2])
+        origin.attrib['rpy'] = "0 0 0"
+
+        geometry = ET.SubElement(collision, "geometry")
+
+        box = ET.SubElement(geometry, "box")
+        box.attrib['size'] = str(extents[0]) + " " + str(extents[1]) + " " + str(extents[2])
+    elif all_contacts == 0:
+        collision = ET.SubElement(link, "collision")
+        origin = ET.SubElement(collision, "origin")
+        origin.attrib['xyz'] = str(str(0) + " " + str(0) + " " + str(extents[2]))
+
+        geometry = ET.SubElement(collision, "geometry")
+
+        box = ET.SubElement(geometry, "sphere")
+        box.attrib['radius'] = "0"
+    else:
+        pass #no collision
+
+def add_parameters(robot):
+    global body_mass_param
+    global leg_mass_param
+    global base_link_extents_param_x
+    global base_link_extents_param_y
+    global base_link_extents_param_z
+    global leg_link_extents_param_x
+    global leg_link_extents_param_y
+    global leg_link_extents_param_z
+    global base_origin_val_x
+    global base_origin_val_y
+    global base_origin_val_z
+    
+    
+    if isinstance(body_mass_param[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = body_mass_param[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(body_mass_param[1])
+        param.attrib["lb"] = "0.1"
+        param.attrib["ub"] = "5.0"
+        body_mass_param[0] = symbols(body_mass_param[0])
+    
+    if isinstance(leg_mass_param[0][0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = leg_mass_param[0][0][1:] #fully constrained parameter
+        param.attrib["value"] = str(leg_mass_param[0][1])
+        param.attrib["lb"] = "0.1"
+        param.attrib["ub"] = "5.0"
+        leg_mass_param[0] = symbols(leg_mass_param[0][0])
+    
+    if isinstance(base_link_extents_param_x[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_link_extents_param_x[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_link_extents_param_x[1])
+        param.attrib["lb"] = "0.5"
+        param.attrib["ub"] = "4.0"
+        base_link_extents_param_x[0] = symbols(base_link_extents_param_x[0])
+    
+    if isinstance(base_link_extents_param_y[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_link_extents_param_y[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_link_extents_param_y[1])
+        param.attrib["lb"] = "0.5"
+        param.attrib["ub"] = "4.0"
+        base_link_extents_param_y[0] = symbols(base_link_extents_param_y[0])
+    
+    if isinstance(base_link_extents_param_z[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_link_extents_param_z[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_link_extents_param_z[1])
+        param.attrib["lb"] = "0.5"
+        param.attrib["ub"] = "4.0"
+        base_link_extents_param_z[0] = symbols(base_link_extents_param_z[0])
+    
+    if isinstance(leg_link_extents_param_x[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = leg_link_extents_param_x[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(leg_link_extents_param_x[1])
+        param.attrib["lb"] = "0.1"
+        param.attrib["ub"] = "0.6"
+        leg_link_extents_param_x[0] = symbols(leg_link_extents_param_x[0])
+    
+    if isinstance(leg_link_extents_param_y[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = leg_link_extents_param_y[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(leg_link_extents_param_y[1])
+        param.attrib["lb"] = "0.1"
+        param.attrib["ub"] = "0.6"
+        leg_link_extents_param_y[0] = symbols(leg_link_extents_param_y[0])
+    
+    if isinstance(leg_link_extents_param_z[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = leg_link_extents_param_z[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(leg_link_extents_param_z[1])
+        param.attrib["lb"] = "0.1"
+        param.attrib["ub"] = "0.5"
+        leg_link_extents_param_z[0] = symbols(leg_link_extents_param_z[0])
+    
+    if isinstance(base_origin_val_x[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_origin_val_x[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_origin_val_x[1])
+        param.attrib["lb"] = "0.0"
+        param.attrib["ub"] = "0.0"
+        base_origin_val_x[0] = symbols(base_origin_val_x[0])
+    
+    if isinstance(base_origin_val_y[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_origin_val_y[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_origin_val_y[1])
+        param.attrib["lb"] = "0.0"
+        param.attrib["ub"] = "0.0"
+        base_origin_val_y[0] = symbols(base_origin_val_y[0])
+    
+    if isinstance(base_origin_val_z[0], str):
+        param = ET.SubElement(robot, "parameter")
+        param.attrib["name"] = base_origin_val_z[0][1:] #fully constrained parameter
+        param.attrib["value"] = str(base_origin_val_z[1])
+        param.attrib["lb"] = "0.0"
+        param.attrib["ub"] = "0.0"
+        base_origin_val_z[0] = symbols(base_origin_val_z[0])
+    
+
+def add_joint(robot, name, BASE_LINK_NAME, leg_link, origin_val, damping):
+    joint = ET.SubElement(robot, "joint")
+    joint.attrib['name'] = name
+    joint.attrib['type'] = "continuous"
+
+    parent = ET.SubElement(joint, "parent")
+    parent.attrib['link'] = BASE_LINK_NAME
+
+    child = ET.SubElement(joint, "child")
+    child.attrib['link'] = leg_link
+
+    origin = ET.SubElement(joint, "origin")
+    origin.attrib['xyz'] = str(origin_val[0]) + " " + str(origin_val[1]) + " " + str(origin_val[2])
+
+    axis = ET.SubElement(joint, "axis")
+    axis.attrib['xyz'] = "0 1 0"
+
+    dynamics = ET.SubElement(joint, "dynamics")
+    dynamics.attrib['damping'] = str(damping)
+
+
+
+
+
+def add_transmission(robot, joint_name):
+    transmission = ET.SubElement(robot, "transmission")
+    transmission.attrib['type'] = "SimpleTransmission"
+    transmission.attrib['name'] = joint_name + "_trans"
+
+    actuator = ET.SubElement(transmission, "actuator")
+    actuator.attrib['name'] = joint_name + "_torque"
+
+    joint = ET.SubElement(transmission, "joint")
+    joint.attrib['name'] = joint_name
+
+    mechanical_reduction = ET.SubElement(transmission, "mechanicalReduction")
+    mechanical_reduction.text = "1"
+
+
+def set_frame(robot, parent_name):
+    frame = ET.SubElement(robot, "frame")
+    frame.attrib['name'] = parent_name + "_frame"
+    frame.attrib['link'] = parent_name
+    frame.attrib['xyz'] = "0 0 0"
+    frame.attrib['rpy'] = "0 0 0"
+
+
+
+def create_file():
+
+    robot = ET.Element("robot")
+    robot.attrib['xmlns'] = "http://drake.mit.edu"
+    robot.attrib['xmlns:xsi'] = "http://www.w3.org/2001/XMLSchema-instance"
+    robot.attrib['xsi:schemaLocation'] = "http://drake.mit.edu ../../doc/drakeURDF.xsd"
+    robot.attrib['name'] = 'Biped'
+    
+    add_parameters(robot)
+    
+    add_link(robot, [base_origin_val_x[0], base_origin_val_y[0], base_origin_val_z[0]], BASE_LINK_NAME, [base_link_extents_param_x[0], base_link_extents_param_y[0], base_link_extents_param_z[0]], body_mass_param[0])
+
+
+    for i in range(NUM_LEGS):
+        link_name = "leg_link" + str(i)
+        #TODO: change base origin?
+        #add_link(robot, [0, 0, LEG_LINK_EXTENTS[2] / 2.0], link_name, LEG_LINK_EXTENTS, LEG_MASS, material_val = "red", color_val = [1, 0, 0, 1], all_contacts = 0)
+        add_link(robot, [0, 0, leg_link_extents_param_z[0] / 2.0], link_name, [leg_link_extents_param_x[0], leg_link_extents_param_y[0], leg_link_extents_param_z[0]], leg_mass_param[0], material_val = "red", color_val = [1, 0, 0, 1], all_contacts = 0)
+
+        n = NUM_LEGS / 2
+
+        #x = BASE_ORIGIN[0] + BASE_LINK_EXTENTS[0] * float(i  / 2 + 1) / float(n + 1) - BASE_LINK_EXTENTS[0]/2.0
+        
+        x = base_origin_val_x[0] + base_link_extents_param_x[0] *  float(i  / 2 + 1) / float(n + 1) - base_link_extents_param_x[0] / 2.0
+
+        if i % 2 == 0:
+            y = base_origin_val_y[0] - base_link_extents_param_y[0]/2.0 - leg_link_extents_param_y[0] / 2.0
+        else:
+            y = base_origin_val_y[0] + base_link_extents_param_y[0]/2.0 + leg_link_extents_param_y[0] / 2.0
+
+        #z = 0.0
+        z = base_origin_val_z[0]
+
+        joint_name = "leg_joint" + str(i)
+        add_joint(robot, joint_name, BASE_LINK_NAME, link_name, [x, y, z], 0.1)
+
+        add_transmission(robot, joint_name)
+
+    set_frame(robot, BASE_LINK_NAME)
+
+    tree = ET.ElementTree(robot)
+    f = open("Biped.urdf", "w")
+    f.write(prettify(robot))
+    f.close()
+
+    print prettify(robot)
+
+
+
+
+if __name__ == '__main__':
+    create_file()

@@ -1,0 +1,235 @@
+<?xml version="1.0" ?>
+<robot name="Ant" xmlns="http://drake.mit.edu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://drake.mit.edu ../../doc/drakeURDF.xsd">
+	<parameter lb="0.8" name="BODY_MASS" ub="1.2" value="1.0"/>
+	<parameter lb="0.8" name="LEG_MASS" ub="1.2" value="1.0"/>
+	<parameter lb="3.0" name="BASE_LINK_EXTENTS_X" ub="6.0" value="3.0"/>
+	<parameter lb="0.2" name="BASE_LINK_EXTENTS_Y" ub="0.2" value="0.2"/>
+	<parameter lb="0.2" name="BASE_LINK_EXTENTS_Z" ub="0.2" value="0.2"/>
+	<parameter lb="0.1" name="LEG_LINK_EXTENTS_X" ub="0.1" value="0.1"/>
+	<parameter lb="0.1" name="LEG_LINK_EXTENTS_Y" ub="0.1" value="0.1"/>
+	<parameter lb="0.1" name="LEG_LINK_EXTENTS_Z" ub="0.5" value="0.5"/>
+	<parameter lb="0.0" name="BASE_ORIGIN_X" ub="0.0" value="0.0"/>
+	<parameter lb="0.0" name="BASE_ORIGIN_Y" ub="0.0" value="0.0"/>
+	<parameter lb="0.0" name="BASE_ORIGIN_Z" ub="0.0" value="0.0"/>
+	<link name="base_link">
+		<inertial>
+			<origin rpy="0 0 0" xyz="$BASE_ORIGIN_X $BASE_ORIGIN_Y $BASE_ORIGIN_Z"/>
+			<mass value="$BODY_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="$BASE_ORIGIN_X $BASE_ORIGIN_Y $BASE_ORIGIN_Z"/>
+			<geometry>
+				<box size="$BASE_LINK_EXTENTS_X $BASE_LINK_EXTENTS_Y $BASE_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="green">
+				<color rgba="0 1 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="leg_link0">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint0" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link0"/>
+		<origin xyz="-0.25*$BASE_LINK_EXTENTS_X + $BASE_ORIGIN_X -0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y - 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint0_trans" type="SimpleTransmission">
+		<actuator name="leg_joint0_torque"/>
+		<joint name="leg_joint0"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link1">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint1" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link1"/>
+		<origin xyz="-0.25*$BASE_LINK_EXTENTS_X + $BASE_ORIGIN_X 0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y + 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint1_trans" type="SimpleTransmission">
+		<actuator name="leg_joint1_torque"/>
+		<joint name="leg_joint1"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link2">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint2" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link2"/>
+		<origin xyz="$BASE_ORIGIN_X -0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y - 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint2_trans" type="SimpleTransmission">
+		<actuator name="leg_joint2_torque"/>
+		<joint name="leg_joint2"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link3">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint3" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link3"/>
+		<origin xyz="$BASE_ORIGIN_X 0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y + 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint3_trans" type="SimpleTransmission">
+		<actuator name="leg_joint3_torque"/>
+		<joint name="leg_joint3"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link4">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint4" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link4"/>
+		<origin xyz="0.25*$BASE_LINK_EXTENTS_X + $BASE_ORIGIN_X -0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y - 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint4_trans" type="SimpleTransmission">
+		<actuator name="leg_joint4_torque"/>
+		<joint name="leg_joint4"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link5">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<mass value="$LEG_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.5*$LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<box size="$LEG_LINK_EXTENTS_X $LEG_LINK_EXTENTS_Y $LEG_LINK_EXTENTS_Z"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 $LEG_LINK_EXTENTS_Z"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint5" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link5"/>
+		<origin xyz="0.25*$BASE_LINK_EXTENTS_X + $BASE_ORIGIN_X 0.5*$BASE_LINK_EXTENTS_Y + $BASE_ORIGIN_Y + 0.5*$LEG_LINK_EXTENTS_Y $BASE_ORIGIN_Z"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint5_trans" type="SimpleTransmission">
+		<actuator name="leg_joint5_torque"/>
+		<joint name="leg_joint5"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<frame link="base_link" name="base_link_frame" rpy="0 0 0" xyz="0 0 0"/>
+</robot>

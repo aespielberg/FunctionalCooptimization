@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../doc/drakeURDF.xsd" name="Quadcopter">
+
+  <parameter name="len1" value="0.0" lb="0.0" ub="1.0"/>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$len1" radius=".05" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <force_element name="prop1">
+    <propellor lower_limit="0" upper_limit="50" scale_factor_thrust="1.0" scale_factor_moment="0.0245">
+      <parent link="base_link"/>
+      <origin xyz="$len1/2 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+    </propellor>
+  </force_element>
+
+
+
+</robot>

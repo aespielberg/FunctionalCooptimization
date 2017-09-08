@@ -1,0 +1,8 @@
+function [g,dg] = timeCost(T,x,params)
+    R = 1;
+    g = T
+    dg = [1,zeros(1, length(x)) zeros(1, length(params))];
+
+    return;
+end
+

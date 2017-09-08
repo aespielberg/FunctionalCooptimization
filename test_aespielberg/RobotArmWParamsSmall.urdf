@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../../doc/drakeURDF.xsd" name="RobotArmWParamsSmall">
+
+  <parameter name="len1" value="1.0" lb="0.5" ub="10"/>
+  <parameter name="len2" value="2.0" lb="0.0" ub="10"/>
+  <parameter name="len3" value="2.0" lb="0.0" ub="10"/>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+         <box size=".2 .2 .2" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="link1">
+    <inertial>
+      <origin xyz="0 0 -$len1/2" rpy="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$len1/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$len1" radius=".05" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+    <!--<collision>
+      <origin xyz="0 0 -$len1 / 2" rpy="0 0 0"/>
+      <geometry>
+       <sphere radius="0.0" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 -$len1" rpy="0 0 0"/>
+      <geometry>
+       <sphere radius="0.0" />
+      </geometry>
+    </collision>-->
+  </link>
+
+  <link name="link2">
+    <inertial>
+      <origin xyz="0 0 -$len2/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$len2/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$len2" radius=".05" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+    <!--<collision>
+      <origin xyz="0 0 -$len2 / 2" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 -$len2" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0" />
+      </geometry>
+    </collision>-->
+  </link>
+  
+  <joint name="joint1" type="continuous">
+    <parent link="base_link" />
+    <child link="link1" />
+    <origin xyz="0 0 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping=".1" />
+  </joint>
+
+  <joint name="joint2" type="continuous">
+    <parent link="link1" />
+    <child link="link2" />
+    <origin xyz="0 0 -$len1" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint1_trans">
+    <actuator name="joint1_torque" />
+    <joint name="joint1" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <transmission type="SimpleTransmission" name="joint2_trans">
+    <actuator name="joint2_torque" />
+    <joint name="joint2" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <link name="link3">
+    <inertial>
+      <origin xyz="0 0 -$len3/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$len3/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$len3" radius=".05" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+    <!--<collision>
+      <origin xyz="0 0 -$len3 / 2" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0" />
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 -$len3" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0" />
+      </geometry>
+    </collision> -->
+  </link>
+
+  <joint name="joint3" type="continuous">
+    <parent link="link2" />
+    <child link="link3" />
+    <origin xyz="0 0 -$len2" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint3_trans">
+    <actuator name="joint3_torque" />
+    <joint name="joint3" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission> 
+
+  <!-- <link name="link4">
+    <inertial>
+      <origin xyz="0 0 -$len4/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$len4/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$len4" radius=".05" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -$len4 / 2" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint4" type="continuous">
+    <parent link="link3" />
+    <child link="link4" />
+    <origin xyz="0 0 -$len3" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint4_trans">
+    <actuator name="joint4_torque" />
+    <joint name="joint4" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission> -->
+
+</robot>

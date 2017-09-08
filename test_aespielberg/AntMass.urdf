@@ -1,0 +1,225 @@
+<?xml version="1.0" ?>
+<robot name="AntMass" xmlns="http://drake.mit.edu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://drake.mit.edu ../../doc/drakeURDF.xsd">
+	<parameter lb="0.8" name="BODY_MASS" ub="1.2" value="1.0"/>
+	<link name="base_link">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<mass value="$BODY_MASS"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<geometry>
+				<box size="1.8 0.2 0.2"/>
+			</geometry>
+			<material name="green">
+				<color rgba="0 1 0 1"/>
+			</material>
+		</visual>
+	</link>
+	<link name="leg_link0">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint0" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link0"/>
+		<origin xyz="-0.45 -0.15 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint0_trans" type="SimpleTransmission">
+		<actuator name="leg_joint0_torque"/>
+		<joint name="leg_joint0"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link1">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint1" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link1"/>
+		<origin xyz="-0.45 0.2 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint1_trans" type="SimpleTransmission">
+		<actuator name="leg_joint1_torque"/>
+		<joint name="leg_joint1"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link2">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint2" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link2"/>
+		<origin xyz="0.0 -0.15 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint2_trans" type="SimpleTransmission">
+		<actuator name="leg_joint2_torque"/>
+		<joint name="leg_joint2"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link3">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint3" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link3"/>
+		<origin xyz="0.0 0.2 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint3_trans" type="SimpleTransmission">
+		<actuator name="leg_joint3_torque"/>
+		<joint name="leg_joint3"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link4">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint4" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link4"/>
+		<origin xyz="0.45 -0.15 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint4_trans" type="SimpleTransmission">
+		<actuator name="leg_joint4_torque"/>
+		<joint name="leg_joint4"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<link name="leg_link5">
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<mass value="1.0"/>
+			<inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 0.15"/>
+			<geometry>
+				<box size="0.1 0.1 0.3"/>
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.3"/>
+			<geometry>
+				<sphere radius="0"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="leg_joint5" type="continuous">
+		<parent link="base_link"/>
+		<child link="leg_link5"/>
+		<origin xyz="0.45 0.2 0.0"/>
+		<axis xyz="0 1 0"/>
+		<dynamics damping="0.1"/>
+	</joint>
+	<transmission name="leg_joint5_trans" type="SimpleTransmission">
+		<actuator name="leg_joint5_torque"/>
+		<joint name="leg_joint5"/>
+		<mechanicalReduction>1</mechanicalReduction>
+	</transmission>
+	<frame link="base_link" name="base_link_frame" rpy="0 0 0" xyz="0 0 0"/>
+</robot>

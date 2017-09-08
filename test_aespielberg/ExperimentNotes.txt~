@@ -1,0 +1,12 @@
+First Biped Experiments:
+
+Had to walk 3m
+Reach 4 m tall
+Masses started at 1kg and could reduce down to 5.
+torque limits of 100Nm
+lower leg was just 1m
+upper leg was 2m
+
+Default:
+keep it at 1kg
+Height for each lower and upper at 2m

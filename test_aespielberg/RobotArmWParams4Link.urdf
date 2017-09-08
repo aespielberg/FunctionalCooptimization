@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+
+<robot xmlns="http://drake.mit.edu"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://drake.mit.edu ../../../doc/drakeURDF.xsd" name="RobotArmWParams4Link">
+
+  <parameter name="l1" value="1.0" lb="0.5" />
+  <parameter name="l2" value="2.0" lb="0.5" />
+  <parameter name="l3" value="2.0" lb="0.5" />
+  <parameter name="l4" value="2.0" lb="0.5" />
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+         <box size=".2 .2 .2" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="link1">
+    <inertial>
+      <origin xyz="0 0 -$l1/2" rpy="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l1/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l1" radius=".05" />
+      </geometry>
+      <material name="red">
+	<color rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <link name="link2">
+    <inertial>
+      <origin xyz="0 0 -$l2/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l2/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l2" radius=".05" />
+      </geometry>
+      <material name="blue">
+	<color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="joint1" type="continuous">
+    <parent link="base_link" />
+    <child link="link1" />
+    <origin xyz="0 .15 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping=".1" />
+  </joint>
+
+  <joint name="joint2" type="continuous">
+    <parent link="link1" />
+    <child link="link2" />
+    <origin xyz="0 .1 -$l1" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint1_trans">
+    <actuator name="joint1_torque" />
+    <joint name="joint1" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <transmission type="SimpleTransmission" name="joint2_trans">
+    <actuator name="joint2_torque" />
+    <joint name="joint2" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission>
+
+  <link name="link3">
+    <inertial>
+      <origin xyz="0 0 -$l3/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l3/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l3" radius=".05" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint3" type="continuous">
+    <parent link="link2" />
+    <child link="link3" />
+    <origin xyz="0 .1 -$l2" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint3_trans">
+    <actuator name="joint3_torque" />
+    <joint name="joint3" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission> 
+
+<link name="link4">
+    <inertial>
+      <origin xyz="0 0 -$l4/2" rpy="0 0 0" />
+      <mass value="1" />
+       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -$l4/2" rpy="0 0 0" />
+      <geometry>
+         <cylinder length="$l4" radius=".05" />
+      </geometry>
+      <material name="green">
+	<color rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint4" type="continuous">
+    <parent link="link3" />
+    <child link="link4" />
+    <origin xyz="0 .1 -$l3" />
+    <axis xyz="0 1 0" />
+     <dynamics damping=".1" />
+  </joint>
+
+  <transmission type="SimpleTransmission" name="joint4_trans">
+    <actuator name="joint4_torque" />
+    <joint name="joint4" />
+    <mechanicalReduction>1</mechanicalReduction>
+  </transmission> 
+
+</robot>
